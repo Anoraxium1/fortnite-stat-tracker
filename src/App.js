@@ -6,6 +6,7 @@ function App() {
   const [playerName, setPlayerName] = useState('');
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [inputType, setInputType] = useState('all');
 
   const searchPlayer = async () => {
     setLoading(true);
@@ -24,6 +25,15 @@ function App() {
     }
     setLoading(false);
   };
+
+  const getStats = () => {
+    if (!stats) return null;
+    if (inputType === 'all') return stats.stats.all;
+    if (inputType === 'gamepad') return stats.stats.gamepad;
+    if (inputType === 'keyboardMouse') return stats.stats.keyboardMouse;
+  }
+
+  const currentStats = getStats();
 
   return (
     <div className="app">
@@ -52,47 +62,69 @@ function App() {
             )}
             <h2>{stats.account.name}</h2>
             <p>Level: {stats.battlePass.level}</p>
+            <p>Progress: {stats.battlePass.progress?.toFixed(1) ?? 'N/A'}%</p>
+          </div>
+
+          <div className="input-buttons">
+            <button
+              className={inputType === 'all' ? 'active' : ''}
+              onClick={() => setInputType('all')}
+            >
+              All
+            </button>
+            <button 
+              className={inputType === 'gamepad' ? 'active' : ''}
+              onClick={() => setInputType('gamepad')}
+            >
+              Gamepad
+            </button>
+            <button 
+              className={inputType === 'keyboardMouse' ? 'active' : ''}
+              onClick={() => setInputType('keyboardMouse')}
+            >
+              Keyboard & Mouse
+            </button>
           </div>
 
           <div className="gamemodes">
             <div className="mode-card">
+              <h3>Overall</h3>
+              <p>Matches: {currentStats?.overall?.matches ?? 'N/A'}</p>
+              <p>Wins: {currentStats?.overall?.wins ?? 'N/A'}</p>
+              <p>Win Rate: {currentStats?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</p>
+              <p>Kills: {currentStats?.overall?.kills ?? 'N/A'}</p>
+              <p>Deaths: {currentStats?.overall?.deaths ?? 'N/A'}</p>
+              <p>KD: {currentStats?.overall?.kd?.toFixed(2) ?? 'N/A'}</p>
+            </div>
+
+            <div className="mode-card">
               <h3>Solo</h3>
-              <p>Matches: {stats.stats.all.solo?.matches ?? 'N/A'}</p>
-              <p>Wins: {stats.stats.all.solo?.wins ?? 'N/A'}</p>
-              <p>Win Rate: {stats.stats.all.solo?.winRate?.toFixed(2) ?? 'N/A'}%</p>
-              <p>Kills: {stats.stats.all.solo?.kills ?? 'N/A'}</p>
-              <p>Deaths: {stats.stats.all.solo?.deaths ?? 'N/A'}</p>
-              <p>KD: {stats.stats.all.solo?.kd?.toFixed(2) ?? 'N/A'}</p>
+              <p>Matches: {currentStats?.solo?.matches ?? 'N/A'}</p>
+              <p>Wins: {currentStats?.solo?.wins ?? 'N/A'}</p>
+              <p>Win Rate: {currentStats?.solo?.winRate?.toFixed(2) ?? 'N/A'}%</p>
+              <p>Kills: {currentStats?.solo?.kills ?? 'N/A'}</p>
+              <p>Deaths: {currentStats?.solo?.deaths ?? 'N/A'}</p>
+              <p>KD: {currentStats?.solo?.kd?.toFixed(2) ?? 'N/A'}</p>
             </div>
 
             <div className="mode-card">
               <h3>Duo</h3>
-              <p>Matches: {stats.stats.all.duo?.matches ?? 'N/A'}</p>
-              <p>Wins: {stats.stats.all.duo?.wins ?? 'N/A'}</p>
-              <p>Win Rate: {stats.stats.all.duo?.winRate?.toFixed(2) ?? 'N/A'}%</p>
-              <p>Kills: {stats.stats.all.duo?.kills ?? 'N/A'}</p>
-              <p>Deaths: {stats.stats.all.duo?.deaths ?? 'N/A'}</p>
-              <p>KD: {stats.stats.all.duo?.kd?.toFixed(2) ?? 'N/A'}</p>
+              <p>Matches: {currentStats?.duo?.matches ?? 'N/A'}</p>
+              <p>Wins: {currentStats?.duo?.wins ?? 'N/A'}</p>
+              <p>Win Rate: {currentStats?.duo?.winRate?.toFixed(2) ?? 'N/A'}%</p>
+              <p>Kills: {currentStats?.duo?.kills ?? 'N/A'}</p>
+              <p>Deaths: {currentStats?.duo?.deaths ?? 'N/A'}</p>
+              <p>KD: {currentStats?.duo?.kd?.toFixed(2) ?? 'N/A'}</p>
             </div>
 
             <div className="mode-card">
               <h3>Squad</h3>
-              <p>Matches: {stats.stats.all.squad?.matches ?? 'N/A'}</p>
-              <p>Wins: {stats.stats.all.squad?.wins ?? 'N/A'}</p>
-              <p>Win Rate: {stats.stats.all.squad?.winRate?.toFixed(2) ?? 'N/A'}%</p>
-              <p>Kills: {stats.stats.all.squad?.kills ?? 'N/A'}</p>
-              <p>Deaths: {stats.stats.all.squad?.deaths ?? 'N/A'}</p>
-              <p>KD: {stats.stats.all.squad?.kd?.toFixed(2) ?? 'N/A'}</p>
-            </div>
-
-            <div className="mode-card">
-              <h3>Overall</h3>
-              <p>Matches: {stats.stats.all.overall?.matches ?? 'N/A'}</p>
-              <p>Wins: {stats.stats.all.overall?.wins ?? 'N/A'}</p>
-              <p>Win Rate: {stats.stats.all.overall?.winRate?.toFixed(2) ?? 'N/A'}%</p>
-              <p>Kills: {stats.stats.all.overall?.kills ?? 'N/A'}</p>
-              <p>Deaths: {stats.stats.all.overall?.deaths ?? 'N/A'}</p>
-              <p>KD: {stats.stats.all.overall?.kd?.toFixed(2) ?? 'N/A'}</p>
+              <p>Matches: {currentStats?.squad?.matches ?? 'N/A'}</p>
+              <p>Wins: {currentStats?.squad?.wins ?? 'N/A'}</p>
+              <p>Win Rate: {currentStats?.squad?.winRate?.toFixed(2) ?? 'N/A'}%</p>
+              <p>Kills: {currentStats?.squad?.kills ?? 'N/A'}</p>
+              <p>Deaths: {currentStats?.squad?.deaths ?? 'N/A'}</p>
+              <p>KD: {currentStats?.squad?.kd?.toFixed(2) ?? 'N/A'}</p>
             </div>
           </div>
 
