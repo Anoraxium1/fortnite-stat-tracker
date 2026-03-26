@@ -1,24 +1,89 @@
-div, input {
+body {
+  background-color: #1a1a2e;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.app {
   text-align: center;
+}
+
+h1 {
+  color: #00d4ff;
+  font-size: 2.5rem;
+}
+
+.search-bar {
+  margin: 20px auto;
 }
 
 input {
   width: 250px;
+  padding: 10px;
+  border-radius: 7px;
+  border: none;
+  margin-right: 10px;
+  font-size: 16px;
+  text-align: center;
 }
 
 button {
-  width: 200px;
-  background-color: white;
-  border-color: white;
+  padding: 10px 20px;
+  background-color: #00d4ff;
+  border: none;
   border-radius: 7px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #00a8cc;
+}
+
+.results {
+  position: relative;
+  margin-top: 30px;
+}
+
+.profile {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  text-align: center;
+}
+
+.profile-img {
+  width: 150px;
+  border-radius: 10px;
+  border: 2px solid #00d4ff;
+}
+
+.gamemodes {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.mode-card {
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+}
+
+.mode-card h3 {
+  color: #00d4ff;
+  margin-top: 0;
 }
 
 p {
-  font-size: 20px;
-}
-
-body {
-  background-color: grey;
+  font-size: 16px;
+  margin: 8px 0;
 }
 
 
