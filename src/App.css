@@ -84,6 +84,14 @@ button:hover {
 p {
   font-size: 16px;
   margin: 8px 0;
+  text-align: justify;
+  padding-bottom: 2.5px;
+}
+
+p1 {
+  font-size: 16px;
+  margin: 8px 0;
+  text-align: center;
 }
 
 .input-buttons {
@@ -114,70 +122,81 @@ p {
   color: #16213e;
 }
 
+.mode-toggle {
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
 
+.mode-toggle button {
+  padding: 10px 30px;
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
 
+.mode-toggle button.active {
+  background-color: #00d4ff;
+  color: #16213e;
+  font-weight: bold;
+}
 
+.mode-toggle button:hover {
+  background-color: #00a8cc;
+  color: #16213e;
+}
 
+.compare-search {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 20px auto;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.App {
+.compare-search-player {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.compare-results {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 20px;
+  margin-top: 30px;
+  align-items: flex-start;
 }
 
-.App-link {
-  color: #61dafb;
+.compare-player-card {
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 220px;
+  text-align: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.compare-player-card h2 {
+  color: #00d4ff;
+  margin-top: 0;
+}
+
+.compare-diff-card {
+  background-color: #0f3460;
+  border: 2px solid #00d4ff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 260px;
+  text-align: center;
+}
+
+.compare-diff-card h2 {
+  color: #00d4ff;
+  margin-top: 0;
+}
+
+.compare-diff-card strong {
+  color: #00d4ff;
 }
