@@ -1,3 +1,4 @@
+/* ===== BASE ===== */
 body {
   background-color: #1a1a2e;
   color: white;
@@ -15,10 +16,7 @@ h1 {
   font-size: 2.5rem;
 }
 
-.search-bar {
-  margin: 20px auto;
-}
-
+/* ===== INPUTS & BUTTONS ===== */
 input {
   width: 250px;
   padding: 10px;
@@ -43,85 +41,7 @@ button:hover {
   background-color: #00a8cc;
 }
 
-.results {
-  position: relative;
-  margin-top: 30px;
-}
-
-.profile {
-  position: absolute;
-  top: 0;
-  right: 20px;
-  text-align: center;
-}
-
-.profile-img {
-  width: 150px;
-  border-radius: 10px;
-  border: 2px solid #00d4ff;
-}
-
-.gamemodes {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.mode-card {
-  background-color: #16213e;
-  border: 1px solid #00d4ff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 200px;
-}
-
-.mode-card h3 {
-  color: #00d4ff;
-  margin-top: 0;
-}
-
-p {
-  font-size: 16px;
-  margin: 8px 0;
-  text-align: justify;
-  padding-bottom: 2.5px;
-}
-
-p1 {
-  font-size: 16px;
-  margin: 8px 0;
-  text-align: center;
-}
-
-.input-buttons {
-  margin: 20px auto;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.input-buttons button {
-  padding: 10px 20px;
-  background-color: #16213e;
-  border: 1px solid #00d4ff;
-  border-radius: 7px;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.input-buttons button.active {
-  background-color: #00d4ff;
-  color: #16213e;
-  font-weight: bold;
-}
-
-.input-buttons button:hover {
-  background-color: #00a8cc;
-  color: #16213e;
-}
-
+/* ===== MODE TOGGLE ===== */
 .mode-toggle {
   margin: 20px auto;
   display: flex;
@@ -137,6 +57,7 @@ p1 {
   color: white;
   cursor: pointer;
   font-size: 15px;
+  font-weight: normal;
 }
 
 .mode-toggle button.active {
@@ -150,6 +71,41 @@ p1 {
   color: #16213e;
 }
 
+/* ===== INPUT TYPE BUTTONS ===== */
+.input-buttons {
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.input-buttons button {
+  padding: 10px 30px;
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 7px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.input-buttons button.active {
+  background-color: #00d4ff;
+  color: #16213e;
+  font-weight: bold;
+}
+
+.input-buttons button:hover {
+  background-color: #00a8cc;
+  color: #16213e;
+}
+
+/* ===== SEARCH BARS ===== */
+.search-bar {
+  margin: 20px auto;
+}
+
 .compare-search {
   display: flex;
   justify-content: center;
@@ -161,6 +117,88 @@ p1 {
   text-align: center;
 }
 
+/* ===== SINGLE PLAYER ===== */
+.results {
+  position: relative;
+  margin-top: 30px;
+}
+
+.profile {
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 10px;
+  padding: 5px;
+  width: 50%;
+  justify-self: center;
+}
+
+.profile h3 {
+  color: #00d4ff;
+  border-bottom: 1px solid #00d4ff44;
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.profile h2 {
+  color: #00d4ff;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 10px 0 6px 0;
+  padding-bottom: -10px;
+  padding-top: -10px;
+  text-align: center;
+}
+
+.profile p {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  font-size: 15px;
+  padding-bottom: 2.5px;
+}
+
+.gamemodes {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.mode-card {
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 220px;
+}
+
+.mode-card h3 {
+  color: #00d4ff;
+  margin-top: 0;
+  text-align: center;
+}
+
+.mode-card p {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 8px 0;
+  font-size: 15px;
+  padding-bottom: 2.5px;
+}
+
+/* ===== Timestamp ===== */
+.Updated {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* ===== COMPARE ===== */
 .compare-results {
   display: flex;
   justify-content: center;
@@ -175,28 +213,62 @@ p1 {
   border-radius: 10px;
   padding: 20px;
   width: 220px;
-  text-align: center;
 }
 
 .compare-player-card h2 {
   color: #00d4ff;
   margin-top: 0;
+  text-align: center;
+}
+
+.compare-player-card p {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 8px 0;
+  font-size: 15px;
 }
 
 .compare-diff-card {
-  background-color: #0f3460;
+  background-color: #16213e;
   border: 2px solid #00d4ff;
   border-radius: 10px;
   padding: 20px;
-  width: 260px;
-  text-align: center;
+  width: 320px;
 }
 
 .compare-diff-card h2 {
   color: #00d4ff;
   margin-top: 0;
+  text-align: center;
+}
+
+.compare-diff-card p {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 8px 0;
+  font-size: 15px;
 }
 
 .compare-diff-card strong {
+  color: lightblue;
+}
+
+/* ===== GENERAL ===== */
+p {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.stat-section-header {
   color: #00d4ff;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #00d4ff44;
+  margin: 10px 0 6px 0;
+  padding-bottom: 3px;
+  text-align: left;
 }
