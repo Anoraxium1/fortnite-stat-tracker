@@ -113,10 +113,10 @@ function App() {
     </div>
   );
 
-  // Profile Card Format \\
+  // Player Profile Card Formats \\
   const profileCard = (stats) => (
     <div className="profile">
-      <h3>Profile</h3>
+      <h3>Player Profile</h3>
         <h2>{stats?.account?.name ?? 'N/A'}</h2>
         <p>
           <span>Level: </span>
@@ -125,6 +125,35 @@ function App() {
         <p>
           <span>Progress To Next Level: </span>
           <span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span>
+        </p>
+    </div>
+  );
+  const profileCard1 = (stats) => (
+    <div className="profile1">
+      <h3>Player 1 Profile</h3>
+        <h2>{stats?.account?.name ?? 'N/A'}</h2>
+        <p>
+          <span>Level: </span>
+          <span>{stats?.battlePass?.level ?? 'N/A'}</span>
+        </p>
+        <p>
+          <span>Progress To Next Level: </span>
+          <span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span>
+        </p>
+    </div>
+  );
+
+  const profileCard2 = (stats) => (
+    <div className="profile2">
+      <h3>Player 2 Profile</h3>
+        <h2>{stats2?.account?.name ?? 'N/A'}</h2>
+        <p>
+          <span>Level: </span>
+          <span>{stats2?.battlePass?.level ?? 'N/A'}</span>
+        </p>
+        <p>
+          <span>Progress To Next Level: </span>
+          <span>{stats2?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span>
         </p>
     </div>
   );
@@ -207,7 +236,7 @@ function App() {
       {!compareMode && stats && (
         <div className="results">
 
-          // Profile Card \\
+          // Player Profile Card \\
           <div className="Profile">
             {profileCard(stats)}
           </div>
@@ -228,8 +257,22 @@ function App() {
         </div>
       )}
 
-      {compareMode && stats && stats2 && (
+      {compareMode && stats && stats2 && (          
         <div className="compare-results">
+
+          // Player Profile Cards \\
+          <div className="profile-container">
+            // Player Profile Card 1 \\
+            <div className="Profile1">
+              {profileCard1(stats)}
+            </div>
+
+            // Player Profile Card 2 \\
+            <div className="Profile2">
+              {profileCard2(stats)}
+            </div>
+          </div>
+
           // Player 1 Statistic Card \\
           <div className="compare-player-card">
             <h2>{name1}</h2>
