@@ -30,8 +30,11 @@ function ShopPage() {
     return type.includes(filter);
   });
 
-  if (loading) return <div className="shop-loading">Loading Item Shop...</div>;
-
+  if (loading) return (
+  <div className="spinner-container">
+    <div className="spinner-large"></div>
+  </div>
+    );
   return (
     <div className="shop-page">
       <h2 className="shop-title">Item Shop</h2>

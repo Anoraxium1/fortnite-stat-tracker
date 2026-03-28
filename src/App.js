@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import ShopPage from './ShopPage';
+import CosmeticsPage from './CosmeticsPage';
 
 function App() {
   {/* Setting Variables */}
@@ -155,10 +156,16 @@ function App() {
         >
           Item Shop
         </button>
+        <button
+          className={page === 'cosmetics' ? 'active' : ''}
+          onClick={() => setPage('cosmetics')}
+        >
+          Cosmetics
+        </button>
       </div>
 
       {/* Title */}
-      <h1>Fortnite Stat Tracker</h1>
+      <h1>FN Tracker</h1>
 
       {/* Stats Page */}
       {page === 'stats' && (
@@ -190,8 +197,9 @@ function App() {
                 onKeyDown={(e) => e.key === 'Enter' && searchPlayer()}
               />
               <br /><br />
+              {/* Single player search button */}
               <button onClick={searchPlayer}>
-                {loading ? 'Searching...' : 'Search'}
+                {loading ? <div className="spinner"></div> : 'Search'}
               </button>
             </div>
           ) : (
@@ -205,8 +213,9 @@ function App() {
                   onKeyDown={(e) => e.key === 'Enter' && searchPlayer()}
                 />
                 <br /><br />
+                {/* Compare player 1 search button */}
                 <button onClick={searchPlayer}>
-                  {loading ? 'Searching...' : 'Search Player 1'}
+                  {loading ? <div className="spinner"></div> : 'Search Player 1'}
                 </button>
               </div>
               <div className="compare-search-player">
@@ -218,8 +227,9 @@ function App() {
                   onKeyDown={(e) => e.key === 'Enter' && searchPlayer2()}
                 />
                 <br /><br />
+                {/* Compare player 2 search button */}
                 <button onClick={searchPlayer2}>
-                  {loading2 ? 'Searching...' : 'Search Player 2'}
+                  {loading2 ? <div className="spinner"></div> : 'Search Player 2'}
                 </button>
               </div>
             </div>
@@ -331,6 +341,9 @@ function App() {
 
       {/* Shop Page */}
       {page === 'shop' && <ShopPage />}
+
+      {/* Cosmetics Page*/}
+      {page === 'cosmetics' && <CosmeticsPage />}
 
     </div>
   );
