@@ -166,6 +166,7 @@ function App() {
             placeholder="Enter username"
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && searchPlayer()}
           />
           <br /><br />
           <button onClick={searchPlayer}>
@@ -180,6 +181,7 @@ function App() {
               placeholder="Enter Player 1 username"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && searchPlayer()}
             />
             <br /><br />
             <button onClick={searchPlayer}>
@@ -192,6 +194,7 @@ function App() {
               placeholder="Enter Player 2 username"
               value={playerName2}
               onChange={(e) => setPlayerName2(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && searchPlayer2()}
             />
             <br /><br />
             <button onClick={searchPlayer2}>
