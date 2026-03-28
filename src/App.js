@@ -15,10 +15,13 @@ function App() {
   const [stats2, setStats2] = useState(null);
   const [loading2, setLoading2] = useState(false);
   const [page, setPage] = useState('stats');
+  const [error, setError] = useState(null);
+  const [error2, setError2] = useState(null);
 
   // Finding Player 1 From API
   const searchPlayer = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await axios.get(
         `https://fortnite-api.com/v2/stats/br/v2`,
@@ -28,28 +31,35 @@ function App() {
         }
       );
       setStats(response.data.data);
-    } catch (error) {
-      console.log('Player not found');
+      setLoading(false);
+    } catch (err) {
+      console.log('setting error');
+      setError('Player not found. Check the username and try again.');
+      setStats(null);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   // Finding Player 2 From API
   const searchPlayer2 = async () => {
     setLoading2(true);
+    setError2(null);
     try {
       const response = await axios.get(
-        'https://fortnite-api.com/v2/stats/br/v2',
-        {
+        `https://fortnite-api.com/v2/stats/br/v2`,
+        { 
           params: { name: playerName2, image: 'all' },
           headers: { 'Authorization': process.env.REACT_APP_FORTNITE_API_KEY }
         }
       );
       setStats2(response.data.data);
-    } catch (error) {
-      console.log('Player 2 not found');
+      setLoading2(false);
+    } catch (err) {
+      console.log('setting error');
+      setError2('Player not found. Check the username and try again.');
+      setStats2(null);
+      setLoading2(false);
     }
-    setLoading2(false);
   };
 
   // Stating Gamemode Selections
@@ -201,6 +211,8 @@ function App() {
               <button onClick={searchPlayer}>
                 {loading ? <div className="spinner"></div> : 'Search'}
               </button>
+              {error && console.log('error state:', error)}
+              {error && <div className="error-message">{error}</div>}
             </div>
           ) : (
             <div className="compare-search">
@@ -217,6 +229,8 @@ function App() {
                 <button onClick={searchPlayer}>
                   {loading ? <div className="spinner"></div> : 'Search Player 1'}
                 </button>
+                {error && console.log('error state:', error)}
+                {error && <div className="error-message">{error}</div>}
               </div>
               <div className="compare-search-player">
                 <input
@@ -231,6 +245,8 @@ function App() {
                 <button onClick={searchPlayer2}>
                   {loading2 ? <div className="spinner"></div> : 'Search Player 2'}
                 </button>
+                {error && console.log('error state:', error)}
+                {error && <div className="error-message">{error}</div>}
               </div>
             </div>
           )}

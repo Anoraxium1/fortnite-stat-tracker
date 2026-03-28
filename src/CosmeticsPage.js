@@ -6,6 +6,21 @@ function CosmeticsPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const getRarityColor = (rarity) => {
+    switch (rarity?.toLowerCase()) {
+      case 'legendary': return '#f4a21e';
+      case 'epic': return '#9d4dbb';
+      case 'rare': return '#4d9dbb';
+      case 'uncommon': return '#4dbb6b';
+      case 'common': return '#8c8c8c';
+      case 'icon series': return '#4dffd7';
+      case 'marvel series': return '#ff3d3d';
+      case 'dc series': return '#4d8cff';
+      case 'star wars series': return '#ffe44d';
+      case 'gaming legends series': return '#7b4dff';
+      default: return '#00d4ff';
+    }
+  };
 
   useEffect(() => {
     const fetchCosmetics = async () => {
@@ -22,7 +37,7 @@ function CosmeticsPage() {
     fetchCosmetics();
   }, []);
 
-  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'emote', 'wrap', 'contrail', 'loadingscreen', 'spray', 'toy', 'music'];
+  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoes', 'emote', 'wrap', 'contrail', 'loadingscreen', 'spray', 'toy', 'music'];
 
   const filtered = cosmetics.filter(item => {
     const matchesFilter = filter === 'all' || item.type?.value?.toLowerCase() === filter;
@@ -70,19 +85,21 @@ function CosmeticsPage() {
         {filtered.slice(0, 200).map((item, index) => {
           const image = item.images?.featured ?? item.images?.icon ?? null;
           return (
-            <div key={index} className="shop-card">
-              {image && (
-                <img
-                  src={image}
-                  alt={item.name}
-                  className="shop-img"
-                />
-              )}
-              <div className="shop-card-info">
-                <p className="shop-item-name">{item.name}</p>
-                <p className="shop-item-type">{item.type?.displayValue ?? 'Unknown'}</p>
-                <p className="shop-item-type">{item.rarity?.displayValue ?? ''}</p>
-              </div>
+            <div
+                key={index}
+                className="shop-card"
+                style={{ borderColor: getRarityColor(item.rarity?.value) }}
+                >
+                {image && (
+                    <img src={image} alt={item.name} className="shop-img" />
+                )}
+                <div className="shop-card-info">
+                    <p className="shop-item-name">{item.name}</p>
+                    <p className="shop-item-type">{item.type?.displayValue ?? 'Unknown'}</p>
+                    <p className="shop-item-type" style={{ color: getRarityColor(item.rarity?.value) }}>
+                    {item.rarity?.displayValue ?? ''}
+                    </p>
+                </div>
             </div>
           );
         })}
