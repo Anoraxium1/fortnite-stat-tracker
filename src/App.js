@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
-  // Setting Variables \\
+  {/* Setting Variables */}
   const [playerName, setPlayerName] = useState('');
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ function App() {
   const [stats2, setStats2] = useState(null);
   const [loading2, setLoading2] = useState(false);
 
-  // Finding Player 1 From API \\
+  // Finding Player 1 From API
   const searchPlayer = async () => {
     setLoading(true);
     try {
@@ -31,7 +31,7 @@ function App() {
     setLoading(false);
   };
 
-  // Finding Player 2 From API \\
+  // Finding Player 2 From API
   const searchPlayer2 = async () => {
     setLoading2(true);
     try {
@@ -49,7 +49,7 @@ function App() {
     setLoading2(false);
   };
 
-  // Stating Gamemode Selections \\
+  // Stating Gamemode Selections
   const getStats = (statsObj) => {
     if (!statsObj) return null;
     if (inputType === 'all') return statsObj.stats.all;
@@ -57,11 +57,11 @@ function App() {
     if (inputType === 'keyboardMouse') return statsObj.stats.keyboardMouse;
   };
 
-  // Each Players Stats \\
+  // Each Players Stats
   const currentStats = getStats(stats);
   const currentStats2 = getStats(stats2);
 
-  // Winner Function \\
+  // Winner Function
   const winner = (val1, val2, name1, name2) => {
     if (val1 == null || val2 == null) return 'N/A';
     if (val1 > val2) return name1;
@@ -69,13 +69,13 @@ function App() {
     return 'Tie';
   };
 
-  // Difference Function \\
+  // Difference Function
   const diff = (val1, val2) => {
     if (val1 == null || val2 == null) return 'N/A';
     return Math.abs(val1 - val2).toFixed(2);
   };
 
-  // Stats Last Updated Timestamp \\
+  // Stats Last Updated Timestamp
   const formatDate = (dateStr) => {
     if (!dateStr) return 'N/A';
     return new Date(dateStr).toLocaleString('en-AU', {
@@ -84,15 +84,16 @@ function App() {
     });
   };
 
-  // Account Name \\
+  // Account Names
   const name1 = stats?.account?.name ?? 'Player 1';
   const name2 = stats2?.account?.name ?? 'Player 2';
 
-  // Statistic Card Format \\
+  // Statistic Row Format
   const StatRow = ({ label, value }) => (
     <p><span>{label}</span><span>{value}</span></p>
   );
 
+  // Statistic Card Format
   const statCard = (label, s) => (
     <div className="mode-card">
       <h3>{label}</h3>
@@ -113,58 +114,35 @@ function App() {
     </div>
   );
 
-  // Player Profile Card Formats \\
-  const profileCard = (stats) => (
-    <div className="profile">
-      <h3>Player Profile</h3>
-        <h2>{stats?.account?.name ?? 'N/A'}</h2>
-        <p>
-          <span>Level: </span>
-          <span>{stats?.battlePass?.level ?? 'N/A'}</span>
-        </p>
-        <p>
-          <span>Progress To Next Level: </span>
-          <span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span>
-        </p>
-    </div>
-  );
-  const profileCard1 = (stats) => (
-    <div className="profile1">
-      <h3>Player 1 Profile</h3>
-        <h2>{stats?.account?.name ?? 'N/A'}</h2>
-        <p>
-          <span>Level: </span>
-          <span>{stats?.battlePass?.level ?? 'N/A'}</span>
-        </p>
-        <p>
-          <span>Progress To Next Level: </span>
-          <span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span>
-        </p>
+  // Compare Stat Card Format
+  const compareStatCard = (playerStats, battlePassData) => (
+    <div className="compare-player-card">
+      <div className="stat-section-header">Battle Pass</div>
+      <p><span>Level</span><span>{battlePassData?.level ?? 'N/A'}</span></p>
+      <div className="stat-section-header">Performance</div>
+      <p><span>Wins</span><span>{playerStats?.overall?.wins ?? 'N/A'}</span></p>
+      <p><span>Win Rate</span><span>{playerStats?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</span></p>
+      <p><span>Matches</span><span>{playerStats?.overall?.matches ?? 'N/A'}</span></p>
+      <div className="stat-section-header">Combat</div>
+      <p><span>Kills</span><span>{playerStats?.overall?.kills ?? 'N/A'}</span></p>
+      <p><span>Deaths</span><span>{playerStats?.overall?.deaths ?? 'N/A'}</span></p>
+      <p><span>KD</span><span>{playerStats?.overall?.kd?.toFixed(2) ?? 'N/A'}</span></p>
+      <p><span>Kills / Match</span><span>{playerStats?.overall?.killsPerMatch ?? 'N/A'}</span></p>
+      <div className="stat-section-header">Score</div>
+      <p><span>Total Score</span><span>{playerStats?.overall?.score ?? 'N/A'}</span></p>
+      <p><span>Score / Match</span><span>{playerStats?.overall?.scorePerMatch?.toFixed(2) ?? 'N/A'}</span></p>
+      <div className="stat-section-header">Time</div>
+      <p><span>Minutes Played</span><span>{playerStats?.overall?.minutesPlayed ?? 'N/A'}</span></p>
     </div>
   );
 
-  const profileCard2 = (stats) => (
-    <div className="profile2">
-      <h3>Player 2 Profile</h3>
-        <h2>{stats2?.account?.name ?? 'N/A'}</h2>
-        <p>
-          <span>Level: </span>
-          <span>{stats2?.battlePass?.level ?? 'N/A'}</span>
-        </p>
-        <p>
-          <span>Progress To Next Level: </span>
-          <span>{stats2?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span>
-        </p>
-    </div>
-  );
-
-  // Visible Stuff \\
   return (
     <div className="app">
-      // Title \\
+
+      {/* Title */}
       <h1>Fortnite Stat Tracker</h1>
 
-      // Mode Toggle Switches \\
+      {/* Mode Toggle Switches */}
       <div className="mode-toggle">
         <button
           className={!compareMode ? 'active' : ''}
@@ -180,7 +158,7 @@ function App() {
         </button>
       </div>
 
-      // Player Search Bars \\
+      {/* Player Search Bars */}
       {!compareMode ? (
         <div className="search-bar">
           <input
@@ -190,7 +168,6 @@ function App() {
             onChange={(e) => setPlayerName(e.target.value)}
           />
           <br /><br />
-          // Search Button \\
           <button onClick={searchPlayer}>
             {loading ? 'Searching...' : 'Search'}
           </button>
@@ -205,7 +182,6 @@ function App() {
               onChange={(e) => setPlayerName(e.target.value)}
             />
             <br /><br />
-            // Search Button Player 1 \\
             <button onClick={searchPlayer}>
               {loading ? 'Searching...' : 'Search Player 1'}
             </button>
@@ -218,7 +194,6 @@ function App() {
               onChange={(e) => setPlayerName2(e.target.value)}
             />
             <br /><br />
-            // Search Button Player 2\\
             <button onClick={searchPlayer2}>
               {loading2 ? 'Searching...' : 'Search Player 2'}
             </button>
@@ -226,22 +201,26 @@ function App() {
         </div>
       )}
 
-      // Gamemode Selector Buttons \\
+      {/* Gamemode Selector Buttons */}
       <div className="input-buttons">
         <button className={inputType === 'all' ? 'active' : ''} onClick={() => setInputType('all')}>All</button>
         <button className={inputType === 'gamepad' ? 'active' : ''} onClick={() => setInputType('gamepad')}>Gamepad</button>
         <button className={inputType === 'keyboardMouse' ? 'active' : ''} onClick={() => setInputType('keyboardMouse')}>Keyboard & Mouse</button>
       </div>
-      // Cards \\
+
+      {/* Single Player View */}
       {!compareMode && stats && (
         <div className="results">
 
-          // Player Profile Card \\
-          <div className="Profile">
-            {profileCard(stats)}
+          {/* Player Profile Card */}
+          <div className="profile">
+            <h3>Player Profile</h3>
+            <h2>{stats?.account?.name ?? 'N/A'}</h2>
+            <p><span>Level</span><span>{stats?.battlePass?.level ?? 'N/A'}</span></p>
+            <p><span>Progress To Next Level</span><span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
           </div>
-          
-          // Each Gamemode Statistic Card \\
+
+          {/* Each Gamemode Statistic Card */}
           <div className="gamemodes">
             {statCard('Overall', currentStats?.overall)}
             {statCard('Solo', currentStats?.solo)}
@@ -249,7 +228,7 @@ function App() {
             {statCard('Squad', currentStats?.squad)}
           </div>
 
-          // Last Updated Timestamp \\
+          {/* Last Updated Timestamp */}
           <div className="Updated">
             <br /><br />
             <p>Last Time Updated: {formatDate(currentStats?.overall?.lastModified)}</p>
@@ -257,90 +236,70 @@ function App() {
         </div>
       )}
 
-      {compareMode && stats && stats2 && (          
-        <div className="compare-results">
+      {/* Compare Player View */}
+      {compareMode && stats && stats2 && (
+        <div className="results">
 
-          // Player Profile Cards \\
+          {/* Player Profile Cards */}
           <div className="profile-container">
-            // Player Profile Card 1 \\
-            <div className="Profile1">
-              {profileCard1(stats)}
+            <div className="profile">
+              <h3>Player 1 Profile</h3>
+              <h2>{stats?.account?.name ?? 'N/A'}</h2>
+              <p><span>Level</span><span>{stats?.battlePass?.level ?? 'N/A'}</span></p>
+              <p><span>Progress To Next Level</span><span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
+            </div>
+            <div className="profile">
+              <h3>Player 2 Profile</h3>
+              <h2>{stats2?.account?.name ?? 'N/A'}</h2>
+              <p><span>Level</span><span>{stats2?.battlePass?.level ?? 'N/A'}</span></p>
+              <p><span>Progress To Next Level</span><span>{stats2?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
+            </div>
+          </div>
+
+          {/* Compare Stat Cards */}
+          <div className="compare-results">
+
+            {/* Player 1 Stat Card */}
+            <div className="compare-player-card">
+              <h2>{name1}</h2>
+              {compareStatCard(currentStats, stats?.battlePass)}
             </div>
 
-            // Player Profile Card 2 \\
-            <div className="Profile2">
-              {profileCard2(stats)}
+            {/* Difference Card */}
+            <div className="compare-diff-card">
+              <h2>Difference</h2>
+              <div className="stat-section-header">Battle Pass</div>
+              <p><strong>Level:</strong> {winner(stats?.battlePass?.level, stats2?.battlePass?.level, name1, name2)} by {diff(stats?.battlePass?.level, stats2?.battlePass?.level)}</p>
+              <div className="stat-section-header">Performance</div>
+              <p><strong>Wins:</strong> {winner(currentStats?.overall?.wins, currentStats2?.overall?.wins, name1, name2)} by {diff(currentStats?.overall?.wins, currentStats2?.overall?.wins)}</p>
+              <p><strong>Win Rate:</strong> {winner(currentStats?.overall?.winRate, currentStats2?.overall?.winRate, name1, name2)} by {diff(currentStats?.overall?.winRate, currentStats2?.overall?.winRate)}%</p>
+              <p><strong>Matches:</strong> {winner(currentStats?.overall?.matches, currentStats2?.overall?.matches, name1, name2)} by {diff(currentStats?.overall?.matches, currentStats2?.overall?.matches)}</p>
+              <div className="stat-section-header">Combat</div>
+              <p><strong>Kills:</strong> {winner(currentStats?.overall?.kills, currentStats2?.overall?.kills, name1, name2)} by {diff(currentStats?.overall?.kills, currentStats2?.overall?.kills)}</p>
+              <p><strong>Deaths:</strong> {winner(currentStats?.overall?.deaths, currentStats2?.overall?.deaths, name1, name2)} by {diff(currentStats?.overall?.deaths, currentStats2?.overall?.deaths)}</p>
+              <p><strong>KD:</strong> {winner(currentStats?.overall?.kd, currentStats2?.overall?.kd, name1, name2)} by {diff(currentStats?.overall?.kd, currentStats2?.overall?.kd)}</p>
+              <p><strong>Kills / Match:</strong> {winner(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch, name1, name2)} by {diff(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch)}</p>
+              <div className="stat-section-header">Score</div>
+              <p><strong>Total Score:</strong> {winner(currentStats?.overall?.score, currentStats2?.overall?.score, name1, name2)} by {diff(currentStats?.overall?.score, currentStats2?.overall?.score)}</p>
+              <p><strong>Score / Match:</strong> {winner(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch, name1, name2)} by {diff(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch)}</p>
+              <div className="stat-section-header">Time</div>
+              <p><strong>Minutes Played:</strong> {winner(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed, name1, name2)} by {diff(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed)}</p>
             </div>
+
+            {/* Player 2 Stat Card */}
+            <div className="compare-player-card">
+              <h2>{name2}</h2>
+              {compareStatCard(currentStats2, stats2?.battlePass)}
+            </div>
+
           </div>
 
-          // Player 1 Statistic Card \\
-          <div className="compare-player-card">
-            <h2>{name1}</h2>
-            <div className="stat-section-header">Battle Pass</div>
-            <p><span>Level</span><span>{stats.battlePass.level}</span></p>
-            <div className="stat-section-header">Performance</div>
-            <p><span>Wins</span><span>{currentStats?.overall?.wins ?? 'N/A'}</span></p>
-            <p><span>Win Rate</span><span>{currentStats?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</span></p>
-            <p><span>Matches</span><span>{currentStats?.overall?.matches ?? 'N/A'}</span></p>
-            <div className="stat-section-header">Combat</div>
-            <p><span>Kills</span><span>{currentStats?.overall?.kills ?? 'N/A'}</span></p>
-            <p><span>Deaths</span><span>{currentStats?.overall?.deaths ?? 'N/A'}</span></p>
-            <p><span>KD</span><span>{currentStats?.overall?.kd?.toFixed(2) ?? 'N/A'}</span></p>
-            <p><span>Kills / Match</span><span>{currentStats?.overall?.killsPerMatch ?? 'N/A'}</span></p>
-            <div className="stat-section-header">Score</div>
-            <p><span>Total Score</span><span>{currentStats?.overall?.score ?? 'N/A'}</span></p>
-            <p><span>Score / Match</span><span>{currentStats?.overall?.scorePerMatch?.toFixed(2) ?? 'N/A'}</span></p>
-            <div className="stat-section-header">Time</div>
-            <p><span>Minutes Played</span><span>{currentStats?.overall?.minutesPlayed ?? 'N/A'}</span></p>
-          </div>
-
-          // Diffence Between Players Card \\
-          <div className="compare-diff-card">
-            <h2>Difference</h2>
-            <div className="stat-section-header">Battle Pass</div>
-            <p><strong>Level:</strong> {winner(stats?.battlePass?.level, stats2?.battlePass?.level, name1, name2)} by {diff(stats?.battlePass?.level, stats2?.battlePass?.level)}</p>
-            <div className="stat-section-header">Performance</div>
-            <p><strong>Wins:</strong> {winner(currentStats?.overall?.wins, currentStats2?.overall?.wins, name1, name2)} by {diff(currentStats?.overall?.wins, currentStats2?.overall?.wins)}</p>
-            <p><strong>Win Rate:</strong> {winner(currentStats?.overall?.winRate, currentStats2?.overall?.winRate, name1, name2)} by {diff(currentStats?.overall?.winRate, currentStats2?.overall?.winRate)}%</p>
-            <p><strong>Matches:</strong> {winner(currentStats?.overall?.matches, currentStats2?.overall?.matches, name1, name2)} by {diff(currentStats?.overall?.matches, currentStats2?.overall?.matches)}</p>
-            <div className="stat-section-header">Combat</div>
-            <p><strong>Kills:</strong> {winner(currentStats?.overall?.kills, currentStats2?.overall?.kills, name1, name2)} by {diff(currentStats?.overall?.kills, currentStats2?.overall?.kills)}</p>
-            <p><strong>Deaths:</strong> {winner(currentStats?.overall?.deaths, currentStats2?.overall?.deaths, name1, name2)} by {diff(currentStats?.overall?.deaths, currentStats2?.overall?.deaths)}</p>
-            <p><strong>KD:</strong> {winner(currentStats?.overall?.kd, currentStats2?.overall?.kd, name1, name2)} by {diff(currentStats?.overall?.kd, currentStats2?.overall?.kd)}</p>
-            <p><strong>Kills / Match:</strong> {winner(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch, name1, name2)} by {diff(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch)}</p>
-            <div className="stat-section-header">Score</div>
-            <p><strong>Total Score:</strong> {winner(currentStats?.overall?.score, currentStats2?.overall?.score, name1, name2)} by {diff(currentStats?.overall?.score, currentStats2?.overall?.score)}</p>
-            <p><strong>Score / Match:</strong> {winner(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch, name1, name2)} by {diff(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch)}</p>
-            <div className="stat-section-header">Time</div>
-            <p><strong>Minutes Played:</strong> {winner(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed, name1, name2)} by {diff(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed)}</p>
-          </div>
-
-          // Player 2 Statistic Card \\
-          <div className="compare-player-card">
-            <h2>{name2}</h2>
-            <div className="stat-section-header">Battle Pass</div>
-            <p><span>Level</span><span>{stats2.battlePass.level}</span></p>
-            <div className="stat-section-header">Performance</div>
-            <p><span>Wins</span><span>{currentStats2?.overall?.wins ?? 'N/A'}</span></p>
-            <p><span>Win Rate</span><span>{currentStats2?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</span></p>
-            <p><span>Matches</span><span>{currentStats2?.overall?.matches ?? 'N/A'}</span></p>
-            <div className="stat-section-header">Combat</div>
-            <p><span>Kills</span><span>{currentStats2?.overall?.kills ?? 'N/A'}</span></p>
-            <p><span>Deaths</span><span>{currentStats2?.overall?.deaths ?? 'N/A'}</span></p>
-            <p><span>KD</span><span>{currentStats2?.overall?.kd?.toFixed(2) ?? 'N/A'}</span></p>
-            <p><span>Kills / Match</span><span>{currentStats2?.overall?.killsPerMatch ?? 'N/A'}</span></p>
-            <div className="stat-section-header">Score</div>
-            <p><span>Total Score</span><span>{currentStats2?.overall?.score ?? 'N/A'}</span></p>
-            <p><span>Score / Match</span><span>{currentStats2?.overall?.scorePerMatch?.toFixed(2) ?? 'N/A'}</span></p>
-            <div className="stat-section-header">Time</div>
-            <p><span>Minutes Played</span><span>{currentStats2?.overall?.minutesPlayed ?? 'N/A'}</span></p>
-          </div>
-
-          // Last Updated Timestamp \\
+          {/* Last Updated Timestamp */}
           <div className="Updated">
             <br /><br />
             <p>Last Time Updated: {formatDate(currentStats?.overall?.lastModified)}</p>
           </div>
+
         </div>
       )}
     </div>
