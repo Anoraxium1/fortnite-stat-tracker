@@ -37,7 +37,7 @@ function CosmeticsPage() {
     fetchCosmetics();
   }, []);
 
-  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoes', 'emote', 'wrap', 'contrail', 'loadingscreen', 'spray', 'toy', 'music'];
+  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoe', 'emote', 'wrap', 'contrail', 'loadingscreen', 'spray', 'toy', 'music'];
 
   const filtered = cosmetics.filter(item => {
     const matchesFilter = filter === 'all' || item.type?.value?.toLowerCase() === filter;

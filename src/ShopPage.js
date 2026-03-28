@@ -28,8 +28,13 @@ function ShopPage() {
         const response = await axios.get('https://fortnite-api.com/v2/shop', {
           headers: { 'Authorization': process.env.REACT_APP_FORTNITE_API_KEY }
         });
-        setShopItems(response.data.data.entries ?? []);
-        console.log('First item rarity:', response.data.data.entries[0]?.brItems?.[0]?.rarity?.value);
+        const entries = response.data.data.entries ?? [];
+        setShopItems(entries);
+
+        // Check what bundle entries look like
+        const bundleItems = entries.filter(e => e.bundle != null);
+        console.log('Bundle entries:', bundleItems);
+        console.log('First item rarity:', entries[0]?.brItems?.[0]?.rarity?.value);
       } catch (error) {
         console.log('Failed to fetch shop', error);
       }
@@ -38,10 +43,11 @@ function ShopPage() {
     fetchShop();
   }, []);
 
-  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoes', 'emote', 'wrap', 'bundle'];
+  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoe', 'emote', 'wrap', 'bundle'];
 
   const filtered = shopItems.filter(entry => {
     if (filter === 'all') return true;
+    if (filter === 'bundle') return entry.bundle != null;
     const item = entry.brItems?.[0];
     const type = item?.type?.value?.toLowerCase() ?? '';
     return type.includes(filter);
