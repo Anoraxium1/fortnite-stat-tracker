@@ -344,10 +344,11 @@ function App() {
 
               </div>
 
-              {/* Last Updated Timestamp */}
+              {/* Last Updated Timestamps */}
               <div className="Updated">
                 <br /><br />
-                <p>Last Time Updated: {formatDate(currentStats?.overall?.lastModified)}</p>
+                <p>{name1} Last Updated: {formatDate(currentStats?.overall?.lastModified)}</p>
+                <p>{name2} Last Updated: {formatDate(currentStats2?.overall?.lastModified)}</p>
               </div>
 
             </div>

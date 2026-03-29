@@ -5,6 +5,7 @@ function ShopPage() {
   const [shopItems, setShopItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [timeLeft, setTimeLeft] = useState('');
 
   const getRarityColor = (rarity) => {
     switch (rarity?.toLowerCase()) {
@@ -38,14 +39,22 @@ function ShopPage() {
     }
   };
 
-  const getTileSize = (tileSize) => {
-    switch (tileSize) {
-      case 'Size_2_x_2': return 'tile-2x2';
-      case 'Size_2_x_1': return 'tile-2x1';
-      case 'Size_1_x_2': return 'tile-1x2';
-      default: return 'tile-1x1';
-    }
-  };
+  // Shop reset countdown
+  useEffect(() => {
+    const updateTimer = () => {
+      const now = new Date();
+      const reset = new Date();
+      reset.setUTCHours(24, 0, 0, 0);
+      const diff = reset - now;
+      const hours = Math.floor(diff / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+    };
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchShop = async () => {
@@ -62,41 +71,69 @@ function ShopPage() {
     fetchShop();
   }, []);
 
-  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoe', 'emote', 'wrap', 'tracks', 'car', 'bundle'];
+  const categories = ['all', 'outfit', 'pickaxe', 'glider', 'backpack', 'shoe', 'emote', 'wrap', 'tracks', 'instruments', 'car', 'lego', 'bundle'];
 
   const filtered = shopItems.filter(entry => {
     if (filter === 'all') return true;
     if (filter === 'bundle') return entry.bundle != null;
     if (filter === 'tracks') return entry.tracks?.length > 0;
     if (filter === 'car') return entry.cars?.length > 0;
+    if (filter === 'instruments') return entry.instruments?.length > 0;
+    if (filter === 'lego') return entry.legoKits?.length > 0;
     const item = entry.brItems?.[0];
     const type = item?.type?.value?.toLowerCase() ?? '';
     return type.includes(filter);
   });
 
   const getEntryDetails = (entry) => {
-    // Tracks
     if (entry.tracks?.length > 0) {
       const track = entry.tracks[0];
       return {
         name: track.title ?? 'Unknown Track',
+        subtitle: track.artist ?? '',
         image: track.albumArt ?? null,
         rarity: null,
       };
     }
-    // Cars
     if (entry.cars?.length > 0) {
       const car = entry.cars[0];
       return {
         name: car.name ?? 'Unknown Car',
-        image: car.images?.small ?? car.images?.large ?? null,
+        subtitle: car.type?.displayValue ?? '',
+        image: car.images?.large ?? car.images?.small ?? null,
         rarity: car.rarity?.value ?? null,
       };
     }
-    // Regular brItems
+    if (entry.instruments?.length > 0) {
+      const instrument = entry.instruments[0];
+      return {
+        name: instrument.name ?? 'Unknown Instrument',
+        subtitle: instrument.type?.displayValue ?? '',
+        image: instrument.images?.large ?? instrument.images?.small ?? null,
+        rarity: instrument.rarity?.value ?? null,
+      };
+    }
+    if (entry.legoKits?.length > 0) {
+      const lego = entry.legoKits[0];
+      return {
+        name: lego.name ?? 'Unknown Kit',
+        subtitle: lego.type?.displayValue ?? '',
+        image: lego.images?.large ?? lego.images?.wide ?? lego.images?.small ?? null,
+        rarity: null,
+      };
+    }
+    if (entry.bundle != null) {
+      return {
+        name: entry.bundle.name ?? 'Bundle',
+        subtitle: entry.bundle.info ?? '',
+        image: entry.bundle.image ?? null,
+        rarity: null,
+      };
+    }
     const item = entry.brItems?.[0];
     return {
       name: item?.name ?? 'Unknown',
+      subtitle: item?.type?.displayValue ?? '',
       image:
         entry.newDisplayAsset?.renderImages?.[0]?.image ??
         item?.images?.featured ??
@@ -114,10 +151,16 @@ function ShopPage() {
 
   return (
     <div className="shop-page">
-      <h2 className="shop-title">Item Shop</h2>
+      <div className="shop-header">
+        <h2 className="shop-title">Item Shop</h2>
+        <div className="shop-timer">
+          <span>Resets in </span>
+          <span className="shop-timer-value">{timeLeft}</span>
+        </div>
+      </div>
 
       {/* Category Filter */}
-      <div className="input-buttons">
+      <div className="input-buttons" style={{ flexWrap: 'wrap' }}>
         {categories.map(cat => (
           <button
             key={cat}
@@ -143,15 +186,14 @@ function ShopPage() {
             <h3 className="shop-section-title">{sectionName}</h3>
             <div className="fn-shop-grid">
               {entries.map((entry, index) => {
-                const { name, image, rarity } = getEntryDetails(entry);
+                const { name, subtitle, image, rarity } = getEntryDetails(entry);
                 const rarityColor = getRarityColor(rarity);
                 const rarityGradient = getRarityGradient(rarity);
-                const tileClass = getTileSize(entry.tileSize);
 
                 return (
                   <div
                     key={index}
-                    className={`fn-shop-card ${tileClass}`}
+                    className="fn-shop-card"
                     style={{
                       background: rarityGradient,
                       borderColor: rarityColor,
@@ -162,6 +204,7 @@ function ShopPage() {
                     )}
                     <div className="fn-shop-overlay">
                       <p className="fn-shop-name">{name}</p>
+                      {subtitle && <p className="fn-shop-subtitle">{subtitle}</p>}
                       <div className="fn-shop-price">
                         <img
                           src="https://fortnite-api.com/images/vbuck.png"
