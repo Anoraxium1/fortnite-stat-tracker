@@ -337,6 +337,14 @@ p {
   color: #16213e;
 }
 
+/* ===== APP PAGE ===== */
+
+.app-title {
+  color: #00d4ff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
 /* ===== SHOP PAGE ===== */
 .shop-page {
   margin-top: 20px;
@@ -471,6 +479,65 @@ p {
   margin: 10px 0;
   text-align: center;
 }
+
+/* ===== MAP PAGE ===== */
+.map-page {
+  margin-top: 20px;
+}
+
+.map-title {
+  color: #00d4ff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.map-image {
+  size: 100px;
+}
+
+/* ========================================================= Change ======================================================================================== */
+
+.map-container {
+  position: relative;
+  display: inline-block;
+}
+
+.map-image {
+  width: 100%;
+  max-width: 800px;
+}
+
+.poi-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.poi-marker:hover {
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.poi-list {
+  margin-top: 20px;
+}
+
+.poi-item {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.poi-item:hover {
+  background-color: #eee;
+}
+
+.poi-details {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+/* ========================================================= Change ======================================================================================== */
 
 /* ===== LOADING SPINNER ===== */
 .spinner {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import './App.css';
 import ShopPage from './ShopPage';
 import CosmeticsPage from './CosmeticsPage';
+import MapPage from './MapPage';
 
 function App() {
   const [playerName, setPlayerName] = useState('');
@@ -121,6 +122,12 @@ function App() {
     </div>
   );
 
+  if (loading) return (
+    <div className="spinner-container">
+      <div className="spinner-large"></div>
+    </div>
+  );
+
   return (
     <div className="app">
 
@@ -129,6 +136,7 @@ function App() {
         <button className={page === 'stats' ? 'active' : ''} onClick={() => setPage('stats')}>Stats</button>
         <button className={page === 'shop' ? 'active' : ''} onClick={() => setPage('shop')}>Item Shop</button>
         <button className={page === 'cosmetics' ? 'active' : ''} onClick={() => setPage('cosmetics')}>Cosmetics</button>
+        <button className={page === 'map' ? 'active' : ''} onClick={() => setPage('map')}>Map</button>
       </div>
 
       {/* Title */}
@@ -137,6 +145,7 @@ function App() {
       {/* Stats Page */}
       {page === 'stats' && (
         <div>
+          <h2 className="app-title">Stats Tracker</h2>
           {/* Mode Toggle */}
           <div className="mode-toggle">
             <button className={!compareMode ? 'active' : ''} onClick={() => setCompareMode(false)}>Single Player</button>
@@ -355,6 +364,9 @@ function App() {
 
       {/* Cosmetics Page */}
       {page === 'cosmetics' && <CosmeticsPage />}
+
+      {/* Map Page */}
+      {page === 'map' && <MapPage />}
 
     </div>
   );
