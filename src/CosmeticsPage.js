@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 function CosmeticsPage() {
@@ -12,9 +12,11 @@ function CosmeticsPage() {
     beans: [],
   });
   const [loading, setLoading] = useState(true);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [filter, setFilter] = useState('br');
   const [subFilter, setSubFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState(null);
 
   const getRarityColor = (rarity) => {
     switch (rarity?.toLowerCase()) {
@@ -72,6 +74,39 @@ function CosmeticsPage() {
     fetchCosmetics();
   }, []);
 
+  // API search for BR items
+  const searchBR = useCallback(async (query) => {
+    if (!query) {
+      setSearchResults(null);
+      return;
+    }
+    setSearchLoading(true);
+    try {
+      const response = await axios.get('https://fortnite-api.com/v2/cosmetics/br/search/all', {
+        headers: { 'Authorization': process.env.REACT_APP_FORTNITE_API_KEY },
+        params: {
+          name: query,
+          matchMethod: 'contains',
+          language: 'en',
+          ...(subFilter !== 'all' && { type: subFilter })
+        }
+      });
+      setSearchResults(response.data.data ?? []);
+    } catch (error) {
+      setSearchResults([]);
+    }
+    setSearchLoading(false);
+  }, [subFilter]);
+
+  // Debounce search
+  useEffect(() => {
+    if (filter !== 'br') return;
+    const timer = setTimeout(() => {
+      searchBR(search);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search, filter, searchBR]);
+
   const categories = ['br', 'tracks', 'instruments', 'cars', 'lego', 'legoKits', 'beans'];
 
   const categoryLabels = {
@@ -87,13 +122,18 @@ function CosmeticsPage() {
   const brSubCategories = ['all', 'outfit', 'backpack', 'pickaxe', 'glider', 'shoe', 'emote', 'wrap', 'contrail', 'loadingscreen', 'spray', 'toy', 'music'];
 
   const getItems = () => {
+    // Use API search results for BR if searching
+    if (filter === 'br' && search && searchResults !== null) {
+      return { items: searchResults.slice(0, 200), total: searchResults.length };
+    }
+
     let items = cosmetics[filter] ?? [];
 
     if (filter === 'br' && subFilter !== 'all') {
       items = items.filter(item => item.type?.value?.toLowerCase() === subFilter);
     }
 
-    if (search) {
+    if (filter !== 'br' && search) {
       items = items.filter(item => {
         const name = (item.name ?? item.title ?? '').toLowerCase();
         return name.includes(search.toLowerCase());
@@ -182,7 +222,7 @@ function CosmeticsPage() {
           <button
             key={cat}
             className={filter === cat ? 'active' : ''}
-            onClick={() => { setFilter(cat); setSubFilter('all'); setSearch(''); }}
+            onClick={() => { setFilter(cat); setSubFilter('all'); setSearch(''); setSearchResults(null); }}
           >
             {categoryLabels[cat]}
           </button>
@@ -196,7 +236,7 @@ function CosmeticsPage() {
             <button
               key={cat}
               className={subFilter === cat ? 'active' : ''}
-              onClick={() => setSubFilter(cat)}
+              onClick={() => { setSubFilter(cat); setSearch(''); setSearchResults(null); }}
             >
               {cat.charAt(0).toUpperCase() + cat.slice(1)}
             </button>
@@ -216,37 +256,43 @@ function CosmeticsPage() {
 
       {/* Results Count */}
       <p className="cosmetics-count">
-        Showing {filtered.length} of {total} items
+        {searchLoading ? 'Searching...' : `Showing ${filtered.length} of ${total} items`}
       </p>
 
       {/* Cosmetics Grid */}
-      <div className="fn-shop-grid">
-        {filtered.map((item, index) => {
-          const { name, subtitle, extra, image, rarity } = getCardDetails(item);
-          const rarityColor = getRarityColor(rarity);
-          const rarityGradient = getRarityGradient(rarity);
+      {searchLoading ? (
+        <div className="spinner-container">
+          <div className="spinner-large"></div>
+        </div>
+      ) : (
+        <div className="fn-shop-grid">
+          {filtered.map((item, index) => {
+            const { name, subtitle, extra, image, rarity } = getCardDetails(item);
+            const rarityColor = getRarityColor(rarity);
+            const rarityGradient = getRarityGradient(rarity);
 
-          return (
-            <div
-              key={index}
-              className="fn-shop-card"
-              style={{
-                background: rarityGradient,
-                borderColor: rarityColor,
-              }}
-            >
-              {image && (
-                <img src={image} alt={name} className="fn-shop-img" />
-              )}
-              <div className="fn-shop-overlay">
-                <p className="fn-shop-name">{name}</p>
-                {subtitle && <p className="fn-shop-subtitle">{subtitle}</p>}
-                {extra && <p className="fn-shop-subtitle">{extra}</p>}
+            return (
+              <div
+                key={index}
+                className="fn-shop-card"
+                style={{
+                  background: rarityGradient,
+                  borderColor: rarityColor,
+                }}
+              >
+                {image && (
+                  <img src={image} alt={name} className="fn-shop-img" />
+                )}
+                <div className="fn-shop-overlay">
+                  <p className="fn-shop-name">{name}</p>
+                  {subtitle && <p className="fn-shop-subtitle">{subtitle}</p>}
+                  {extra && <p className="fn-shop-subtitle">{extra}</p>}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

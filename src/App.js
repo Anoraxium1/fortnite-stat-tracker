@@ -114,11 +114,18 @@ function App() {
       <StatRow label="Wins" value={s?.wins ?? 'N/A'} />
       <StatRow label="Win Rate" value={`${s?.winRate?.toFixed(2) ?? 'N/A'}%`} />
       <StatRow label="Matches" value={s?.matches ?? 'N/A'} />
+      {s?.top3 != null && <StatRow label="Top 3" value={s.top3} />}
+      {s?.top5 != null && <StatRow label="Top 5" value={s.top5} />}
+      {s?.top6 != null && <StatRow label="Top 6" value={s.top6} />}
+      {s?.top10 != null && <StatRow label="Top 10" value={s.top10} />}
+      {s?.top12 != null && <StatRow label="Top 12" value={s.top12} />}
+      {s?.top25 != null && <StatRow label="Top 25" value={s.top25} />}
       <div className="stat-section-header">Combat</div>
       <StatRow label="Kills" value={s?.kills ?? 'N/A'} />
       <StatRow label="Deaths" value={s?.deaths ?? 'N/A'} />
       <StatRow label="KD" value={s?.kd?.toFixed(2) ?? 'N/A'} />
       <StatRow label="Kills / Match" value={s?.killsPerMatch ?? 'N/A'} />
+      <StatRow label="Players Outlived" value={s?.playersOutlived ?? 'N/A'} />
       <div className="stat-section-header">Score</div>
       <StatRow label="Total Score" value={s?.score ?? 'N/A'} />
       <StatRow label="Score / Match" value={s?.scorePerMatch?.toFixed(2) ?? 'N/A'} />
@@ -136,11 +143,16 @@ function App() {
       <p><span>Wins</span><span>{playerStats?.overall?.wins ?? 'N/A'}</span></p>
       <p><span>Win Rate</span><span>{playerStats?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</span></p>
       <p><span>Matches</span><span>{playerStats?.overall?.matches ?? 'N/A'}</span></p>
+      {playerStats?.overall?.top3 != null && <p><span>Top 3</span><span>{playerStats.overall.top3}</span></p>}
+      {playerStats?.overall?.top5 != null && <p><span>Top 5</span><span>{playerStats.overall.top5}</span></p>}
+      {playerStats?.overall?.top10 != null && <p><span>Top 10</span><span>{playerStats.overall.top10}</span></p>}
+      {playerStats?.overall?.top25 != null && <p><span>Top 25</span><span>{playerStats.overall.top25}</span></p>}
       <div className="stat-section-header">Combat</div>
       <p><span>Kills</span><span>{playerStats?.overall?.kills ?? 'N/A'}</span></p>
       <p><span>Deaths</span><span>{playerStats?.overall?.deaths ?? 'N/A'}</span></p>
       <p><span>KD</span><span>{playerStats?.overall?.kd?.toFixed(2) ?? 'N/A'}</span></p>
       <p><span>Kills / Match</span><span>{playerStats?.overall?.killsPerMatch ?? 'N/A'}</span></p>
+      <p><span>Players Outlived</span><span>{playerStats?.overall?.playersOutlived ?? 'N/A'}</span></p>
       <div className="stat-section-header">Score</div>
       <p><span>Total Score</span><span>{playerStats?.overall?.score ?? 'N/A'}</span></p>
       <p><span>Score / Match</span><span>{playerStats?.overall?.scorePerMatch?.toFixed(2) ?? 'N/A'}</span></p>
@@ -276,6 +288,7 @@ function App() {
                 {statCard('Solo', currentStats?.solo)}
                 {statCard('Duo', currentStats?.duo)}
                 {statCard('Squad', currentStats?.squad)}
+                {statCard('LTM', currentStats?.ltm)}
               </div>
 
               {/* Last Updated Timestamp */}
@@ -287,62 +300,127 @@ function App() {
           )}
 
           {/* Compare Player View */}
-          {compareMode && stats && stats2 && (
+          {compareMode && (stats || stats2) && (
             <div className="results">
 
               {/* Player Profile Cards */}
               <div className="profile-container">
-                <div className="profile">
-                  <h3>Player 1 Profile</h3>
-                  <h2>{stats?.account?.name ?? 'N/A'}</h2>
-                  <p><span>Level</span><span>{stats?.battlePass?.level ?? 'N/A'}</span></p>
-                  <p><span>Progress To Next Level</span><span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
-                </div>
-                <div className="profile">
-                  <h3>Player 2 Profile</h3>
-                  <h2>{stats2?.account?.name ?? 'N/A'}</h2>
-                  <p><span>Level</span><span>{stats2?.battlePass?.level ?? 'N/A'}</span></p>
-                  <p><span>Progress To Next Level</span><span>{stats2?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
-                </div>
+            {stats && (
+              <div className="profile">
+                <h3>Player 1 Profile</h3>
+                <h2>{stats?.account?.name ?? 'N/A'}</h2>
+                <p><span>Level</span><span>{stats?.battlePass?.level ?? 'N/A'}</span></p>
+                <p><span>Progress To Next Level</span><span>{stats?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
               </div>
-
-              {/* Compare Stat Cards */}
-              <div className="compare-results">
-
-                {/* Player 1 Stat Card */}
-                <div className="compare-player-card">
-                  <h2>{name1}</h2>
-                  {compareStatCard(currentStats, stats?.battlePass)}
-                </div>
-
-                {/* Difference Card */}
-                <div className="compare-diff-card">
-                  <h2>Difference</h2>
-                  <div className="stat-section-header">Battle Pass</div>
-                  <p><strong>Level:</strong> {winner(stats?.battlePass?.level, stats2?.battlePass?.level, name1, name2)} by {diff(stats?.battlePass?.level, stats2?.battlePass?.level)}</p>
-                  <div className="stat-section-header">Performance</div>
-                  <p><strong>Wins:</strong> {winner(currentStats?.overall?.wins, currentStats2?.overall?.wins, name1, name2)} by {diff(currentStats?.overall?.wins, currentStats2?.overall?.wins)}</p>
-                  <p><strong>Win Rate:</strong> {winner(currentStats?.overall?.winRate, currentStats2?.overall?.winRate, name1, name2)} by {diff(currentStats?.overall?.winRate, currentStats2?.overall?.winRate)}%</p>
-                  <p><strong>Matches:</strong> {winner(currentStats?.overall?.matches, currentStats2?.overall?.matches, name1, name2)} by {diff(currentStats?.overall?.matches, currentStats2?.overall?.matches)}</p>
-                  <div className="stat-section-header">Combat</div>
-                  <p><strong>Kills:</strong> {winner(currentStats?.overall?.kills, currentStats2?.overall?.kills, name1, name2)} by {diff(currentStats?.overall?.kills, currentStats2?.overall?.kills)}</p>
-                  <p><strong>Deaths:</strong> {winner(currentStats?.overall?.deaths, currentStats2?.overall?.deaths, name1, name2)} by {diff(currentStats?.overall?.deaths, currentStats2?.overall?.deaths)}</p>
-                  <p><strong>KD:</strong> {winner(currentStats?.overall?.kd, currentStats2?.overall?.kd, name1, name2)} by {diff(currentStats?.overall?.kd, currentStats2?.overall?.kd)}</p>
-                  <p><strong>Kills / Match:</strong> {winner(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch, name1, name2)} by {diff(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch)}</p>
-                  <div className="stat-section-header">Score</div>
-                  <p><strong>Total Score:</strong> {winner(currentStats?.overall?.score, currentStats2?.overall?.score, name1, name2)} by {diff(currentStats?.overall?.score, currentStats2?.overall?.score)}</p>
-                  <p><strong>Score / Match:</strong> {winner(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch, name1, name2)} by {diff(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch)}</p>
-                  <div className="stat-section-header">Time</div>
-                  <p><strong>Minutes Played:</strong> {winner(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed, name1, name2)} by {diff(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed)}</p>
-                </div>
-
-                {/* Player 2 Stat Card */}
-                <div className="compare-player-card">
-                  <h2>{name2}</h2>
-                  {compareStatCard(currentStats2, stats2?.battlePass)}
-                </div>
-
+            )}
+            {stats2 && (
+              <div className="profile">
+                <h3>Player 2 Profile</h3>
+                <h2>{stats2?.account?.name ?? 'N/A'}</h2>
+                <p><span>Level</span><span>{stats2?.battlePass?.level ?? 'N/A'}</span></p>
+                <p><span>Progress To Next Level</span><span>{stats2?.battlePass?.progress?.toFixed(1) ?? 'N/A'}%</span></p>
               </div>
+            )}
+          </div>
+
+          {/* Compare Stat Cards */}
+          <div className="compare-grid">
+
+          {/* Headers */}
+          <div className="compare-player-header">{stats ? name1 : ''}</div>
+          <div className="compare-diff-header">Difference</div>
+          <div className="compare-player-header">{stats2 ? name2 : ''}</div>
+
+          {/* Battle Pass */}
+          <div className="compare-section-header">Battle Pass</div>
+          <div className="compare-section-header">Battle Pass</div>
+          <div className="compare-section-header">Battle Pass</div>
+
+          <div className="compare-cell"><span>Level</span><span>{stats?.battlePass?.level ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Level:</strong> {winner(stats?.battlePass?.level, stats2?.battlePass?.level, name1, name2)} by {diff(stats?.battlePass?.level, stats2?.battlePass?.level)}</div>
+          <div className="compare-cell"><span>Level</span><span>{stats2?.battlePass?.level ?? 'N/A'}</span></div>
+
+          {/* Performance */}
+          <div className="compare-section-header">Performance</div>
+          <div className="compare-section-header">Performance</div>
+          <div className="compare-section-header">Performance</div>
+
+          <div className="compare-cell"><span>Wins</span><span>{currentStats?.overall?.wins ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Wins:</strong> {winner(currentStats?.overall?.wins, currentStats2?.overall?.wins, name1, name2)} by {diff(currentStats?.overall?.wins, currentStats2?.overall?.wins)}</div>
+          <div className="compare-cell"><span>Wins</span><span>{currentStats2?.overall?.wins ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Win Rate</span><span>{currentStats?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</span></div>
+          <div className="compare-cell-diff"><strong>Win Rate:</strong> {winner(currentStats?.overall?.winRate, currentStats2?.overall?.winRate, name1, name2)} by {diff(currentStats?.overall?.winRate, currentStats2?.overall?.winRate)}%</div>
+          <div className="compare-cell"><span>Win Rate</span><span>{currentStats2?.overall?.winRate?.toFixed(2) ?? 'N/A'}%</span></div>
+
+          <div className="compare-cell"><span>Matches</span><span>{currentStats?.overall?.matches ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Matches:</strong> {winner(currentStats?.overall?.matches, currentStats2?.overall?.matches, name1, name2)} by {diff(currentStats?.overall?.matches, currentStats2?.overall?.matches)}</div>
+          <div className="compare-cell"><span>Matches</span><span>{currentStats2?.overall?.matches ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Top 3</span><span>{currentStats?.overall?.top3 ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Top 3:</strong> {winner(currentStats?.overall?.top3, currentStats2?.overall?.top3, name1, name2)} by {diff(currentStats?.overall?.top3, currentStats2?.overall?.top3)}</div>
+          <div className="compare-cell"><span>Top 3</span><span>{currentStats2?.overall?.top3 ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Top 5</span><span>{currentStats?.overall?.top5 ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Top 5:</strong> {winner(currentStats?.overall?.top5, currentStats2?.overall?.top5, name1, name2)} by {diff(currentStats?.overall?.top5, currentStats2?.overall?.top5)}</div>
+          <div className="compare-cell"><span>Top 5</span><span>{currentStats2?.overall?.top5 ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Top 10</span><span>{currentStats?.overall?.top10 ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Top 10:</strong> {winner(currentStats?.overall?.top10, currentStats2?.overall?.top10, name1, name2)} by {diff(currentStats?.overall?.top10, currentStats2?.overall?.top10)}</div>
+          <div className="compare-cell"><span>Top 10</span><span>{currentStats2?.overall?.top10 ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Top 25</span><span>{currentStats?.overall?.top25 ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Top 25:</strong> {winner(currentStats?.overall?.top25, currentStats2?.overall?.top25, name1, name2)} by {diff(currentStats?.overall?.top25, currentStats2?.overall?.top25)}</div>
+          <div className="compare-cell"><span>Top 25</span><span>{currentStats2?.overall?.top25 ?? 'N/A'}</span></div>
+
+          {/* Combat */}
+          <div className="compare-section-header">Combat</div>
+          <div className="compare-section-header">Combat</div>
+          <div className="compare-section-header">Combat</div>
+
+          <div className="compare-cell"><span>Kills</span><span>{currentStats?.overall?.kills ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Kills:</strong> {winner(currentStats?.overall?.kills, currentStats2?.overall?.kills, name1, name2)} by {diff(currentStats?.overall?.kills, currentStats2?.overall?.kills)}</div>
+          <div className="compare-cell"><span>Kills</span><span>{currentStats2?.overall?.kills ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Deaths</span><span>{currentStats?.overall?.deaths ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Deaths:</strong> {winner(currentStats?.overall?.deaths, currentStats2?.overall?.deaths, name1, name2)} by {diff(currentStats?.overall?.deaths, currentStats2?.overall?.deaths)}</div>
+          <div className="compare-cell"><span>Deaths</span><span>{currentStats2?.overall?.deaths ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>KD</span><span>{currentStats?.overall?.kd?.toFixed(2) ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>KD:</strong> {winner(currentStats?.overall?.kd, currentStats2?.overall?.kd, name1, name2)} by {diff(currentStats?.overall?.kd, currentStats2?.overall?.kd)}</div>
+          <div className="compare-cell"><span>KD</span><span>{currentStats2?.overall?.kd?.toFixed(2) ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Kills / Match</span><span>{currentStats?.overall?.killsPerMatch ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Kills / Match:</strong> {winner(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch, name1, name2)} by {diff(currentStats?.overall?.killsPerMatch, currentStats2?.overall?.killsPerMatch)}</div>
+          <div className="compare-cell"><span>Kills / Match</span><span>{currentStats2?.overall?.killsPerMatch ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Players Outlived</span><span>{currentStats?.overall?.playersOutlived ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Players Outlived:</strong> {winner(currentStats?.overall?.playersOutlived, currentStats2?.overall?.playersOutlived, name1, name2)} by {diff(currentStats?.overall?.playersOutlived, currentStats2?.overall?.playersOutlived)}</div>
+          <div className="compare-cell"><span>Players Outlived</span><span>{currentStats2?.overall?.playersOutlived ?? 'N/A'}</span></div>
+
+          {/* Score */}
+          <div className="compare-section-header">Score</div>
+          <div className="compare-section-header">Score</div>
+          <div className="compare-section-header">Score</div>
+
+          <div className="compare-cell"><span>Total Score</span><span>{currentStats?.overall?.score ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Total Score:</strong> {winner(currentStats?.overall?.score, currentStats2?.overall?.score, name1, name2)} by {diff(currentStats?.overall?.score, currentStats2?.overall?.score)}</div>
+          <div className="compare-cell"><span>Total Score</span><span>{currentStats2?.overall?.score ?? 'N/A'}</span></div>
+
+          <div className="compare-cell"><span>Score / Match</span><span>{currentStats?.overall?.scorePerMatch?.toFixed(2) ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Score / Match:</strong> {winner(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch, name1, name2)} by {diff(currentStats?.overall?.scorePerMatch, currentStats2?.overall?.scorePerMatch)}</div>
+          <div className="compare-cell"><span>Score / Match</span><span>{currentStats2?.overall?.scorePerMatch?.toFixed(2) ?? 'N/A'}</span></div>
+
+          {/* Time */}
+          <div className="compare-section-header">Time</div>
+          <div className="compare-section-header">Time</div>
+          <div className="compare-section-header">Time</div>
+
+          <div className="compare-cell"><span>Minutes Played</span><span>{currentStats?.overall?.minutesPlayed ?? 'N/A'}</span></div>
+          <div className="compare-cell-diff"><strong>Minutes Played:</strong> {winner(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed, name1, name2)} by {diff(currentStats?.overall?.minutesPlayed, currentStats2?.overall?.minutesPlayed)}</div>
+          <div className="compare-cell"><span>Minutes Played</span><span>{currentStats2?.overall?.minutesPlayed ?? 'N/A'}</span></div>
+
+        </div>
 
               {/* Last Updated Timestamps */}
               <div className="Updated">

@@ -117,6 +117,80 @@ button:hover {
   text-align: center;
 }
 
+/* ===== COMPARE GRID ===== */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 0;
+  max-width: 1000px;
+  margin: 20px auto;
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.compare-player-header {
+  background-color: #0f3460;
+  color: #00d4ff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px 10px;
+  border-bottom: 2px solid #00d4ff;
+}
+
+.compare-diff-header {
+  background-color: #0a2440;
+  color: #00d4ff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px 10px;
+  border-bottom: 2px solid #00d4ff;
+  border-left: 1px solid #00d4ff44;
+  border-right: 1px solid #00d4ff44;
+}
+
+.compare-section-header {
+  background-color: #0d1b35;
+  color: #00d4ff;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-top: 1px solid #00d4ff44;
+  border-bottom: 1px solid #00d4ff22;
+}
+
+.compare-section-header:nth-child(3n+2) {
+  border-left: 1px solid #00d4ff44;
+  border-right: 1px solid #00d4ff44;
+}
+
+.compare-cell {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #00d4ff11;
+}
+
+.compare-cell-diff {
+  padding: 7px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #00d4ff11;
+  border-left: 1px solid #00d4ff44;
+  border-right: 1px solid #00d4ff44;
+  text-align: center;
+  color: #ccc;
+}
+
+.compare-cell-diff strong {
+  color: #00d4ff;
+}
+
 /* ===== TIMESTAMP ===== */
 .Updated {
   text-align: center;
