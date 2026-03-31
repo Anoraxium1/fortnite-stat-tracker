@@ -491,53 +491,132 @@ p {
   margin-bottom: 20px;
 }
 
-.map-image {
-  size: 100px;
+.map-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
 }
-
-/* ========================================================= Change ======================================================================================== */
 
 .map-container {
   position: relative;
   display: inline-block;
+  border: 2px solid #00d4ff;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .map-image {
-  width: 100%;
-  max-width: 800px;
+  width: 750px;
+  display: block;
 }
 
 .poi-marker {
   position: absolute;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
+  transition: transform 0.15s;
+  z-index: 10;
 }
 
 .poi-marker:hover {
-  transform: translate(-50%, -50%) scale(1.3);
+  transform: translate(-50%, -50%) scale(1.4);
 }
 
-.poi-list {
-  margin-top: 20px;
+.poi-marker-selected {
+  transform: translate(-50%, -50%) scale(1.4);
+}
+
+.poi-tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: white;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.poi-sidebar {
+  width: 625px;
+  flex-shrink: 0;
+}
+
+.poi-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #16213e;
+  border: 1px solid #00d4ff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.poi-list-header:hover {
+  background-color: #0f3460;
+}
+
+.poi-list-title {
+  color: #00d4ff;
+  margin: 0;
+  font-size: 14px;
+}
+
+.poi-list-arrow {
+  color: #00d4ff;
+  font-size: 14px;
+}
+
+.poi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 6px;
+  margin-top: 8px;
+  background-color: #16213e;
+  border: 1px solid #00d4ff44;
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 700px;
+  overflow-y: auto;
 }
 
 .poi-item {
+  background-color: #0d1b35;
+  border: 1px solid #00d4ff22;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 13px;
   cursor: pointer;
-  padding: 5px;
+  transition: all 0.15s;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
 }
 
 .poi-item:hover {
-  background-color: #eee;
+  border-color: #00d4ff;
+  background-color: #0f3460;
 }
 
-.poi-details {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
+.poi-item-selected {
+  background-color: #00d4ff;
+  color: #16213e;
+  font-weight: bold;
+  border-color: #00d4ff;
 }
-
-/* ========================================================= Change ======================================================================================== */
 
 /* ===== LOADING SPINNER ===== */
 .spinner {
