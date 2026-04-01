@@ -7,6 +7,7 @@ function MapPage() {
   const [showPois, setShowPois] = useState(true);
   const [selectedPoi, setSelectedPoi] = useState(null);
   const [poiListOpen, setPoiListOpen] = useState(false);
+  const [showPins, setShowPins] = useState(true);
 
   useEffect(() => {
     const fetchMap = async () => {
@@ -36,6 +37,11 @@ function MapPage() {
       {/* Toggle Buttons */}
       <div className="input-buttons">
         <button className={showPois ? 'active' : ''} onClick={() => setShowPois(true)}>Show POIs</button>
+        {showPois && (
+          <button className={showPins ? 'active' : ''} onClick={() => setShowPins(!showPins)}>
+            {showPins ? 'Hide Pins' : 'Show Pins'}
+          </button>
+        )}
         <button className={!showPois ? 'active' : ''} onClick={() => setShowPois(false)}>Hide POIs</button>
       </div>
 
@@ -70,7 +76,7 @@ function MapPage() {
             alt="Fortnite Map"
             className="map-image"
           />
-          {showPois && map?.pois?.map((poi) => (
+          {showPois && showPins && map?.pois?.map((poi) => (
             <div
               key={poi.id}
               className={`poi-marker ${selectedPoi?.id === poi.id ? 'poi-marker-selected' : ''}`}
